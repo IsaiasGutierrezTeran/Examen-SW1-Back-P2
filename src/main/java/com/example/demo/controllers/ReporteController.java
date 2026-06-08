@@ -37,9 +37,13 @@ public class ReporteController {
 
         Reporte reporte = reporteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Reporte no encontrado: " + id));
-        String contentType = "CSV".equalsIgnoreCase(reporte.getFormato())
-                ? "text/csv"
-                : "application/octet-stream";
+        String fmt = reporte.getFormato() != null ? reporte.getFormato().toUpperCase() : "";
+        String contentType = switch (fmt) {
+            case "CSV" -> "text/csv";
+            case "PDF" -> "application/pdf";
+            case "EXCEL", "XLSX" -> "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            default -> "application/octet-stream";
+        };
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,

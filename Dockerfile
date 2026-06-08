@@ -26,6 +26,9 @@ WORKDIR /app
 
 # Usuario no-root.
 RUN useradd -r -u 1001 spring
+# Directorio de escritura para archivos generados (reportes PDF/Excel/CSV,
+# uploads). Debe pertenecer a 'spring' o la generación falla con AccessDenied.
+RUN mkdir -p /app/uploads/reportes && chown -R spring:spring /app/uploads
 # bootJar produce un único jar ejecutable en build/libs (no se corre la task `jar`,
 # así que no hay *-plain.jar que colisione con el glob).
 COPY --from=build /src/build/libs/*.jar app.jar
