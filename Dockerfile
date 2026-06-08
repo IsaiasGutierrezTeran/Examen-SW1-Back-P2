@@ -5,7 +5,7 @@
 # Contexto de build esperado: la carpeta Backend/ (donde vive este Dockerfile).
 #   docker build -t tramites/backend -f Backend/Dockerfile Backend
 # ──────────────────────────────────────────────────────────────────────────────
-FROM eclipse-temurin:17-jdk AS build
+FROM eclipse-temurin:21-jdk AS build
 WORKDIR /src
 
 # 1) Solo los archivos de build primero → cachea la resolución de dependencias
@@ -21,7 +21,7 @@ COPY src ./src
 RUN ./gradlew --no-daemon clean bootJar -x test
 
 # ──────────────────────────────────────────────────────────────────────────────
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Usuario no-root.

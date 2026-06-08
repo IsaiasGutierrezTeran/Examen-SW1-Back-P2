@@ -4,7 +4,9 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://admin:12345678@localhost:27017/tramites_db?authSource=admin
+      # Spring Boot 4.0.6 no aplica credenciales al driver (credential=null), por eso
+      # Mongo corre SIN auth y la URI no lleva usuario/clave. Override en GCP con MONGO_URI.
+      uri: ${MONGO_URI:mongodb://localhost:27017/tramites_db}
       auto-index-creation: true
 
 server:
@@ -16,7 +18,7 @@ app:
     expiration-ms: 86400000
     issuer: "tramites-backend"
   seed:
-    reset: true   # true = limpia la BD y re-siembra en cada arranque (dev). false = solo siembra si faltan datos.
+    reset: ${SEED_RESET:true}   # true = limpia la BD y re-siembra en cada arranque (dev). false = solo siembra si faltan datos.
 
   # === Parte 2 · Gestión documental ===
   documental:

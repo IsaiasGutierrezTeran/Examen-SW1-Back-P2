@@ -1,7 +1,8 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://admin:12345678@127.0.0.1:27017/tramites_db?authSource=admin
+      # Spring Boot 4.0.6 no aplica credenciales (credential=null) -> Mongo SIN auth.
+      uri: ${MONGO_URI:mongodb://localhost:27017/tramites_db}
       auto-index-creation: true
 server:
   port: 8080

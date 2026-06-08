@@ -1,35 +1,81 @@
-version: '3.8'
-
+# ──────────────────────────────────────────────────────────────────────────────
+# Orquestación completa: MongoDB + Microservicio IA + Backend Spring Boot.
+#
+# Sirve igual en local y en la VM de Google Cloud. Requiere que el microservicio
+# IA esté clonado como carpeta HERMANA de este repo:
+#
+#   <carpeta>/
+#     ├── 2dPBACK/                  (ESTE repo — corre el compose desde aquí)
+#     │     └── docker-compose.yml
+#     └── 2doPMicroservicio/        (microservicio IA FastAPI, repo ExamenSWMS)
+#
+# Arranque:   docker compose up -d --build      (ejecutar DENTRO de 2dPBACK/)
+# Logs:       docker compose logs -f backend
+# Apagar:     docker compose down               (agrega -v para borrar la BD)
+#
+# Guía de despliegue paso a paso: ver DESPLIEGUE-GCP.md
+# ──────────────────────────────────────────────────────────────────────────────
 services:
+
   mongodb:
     image: mongo:7.0
     container_name: tramites_mongodb
     restart: always
+    # SIN auth a propósito: Spring Boot 4.0.6 no aplica credenciales al driver.
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: "12345678"
       MONGO_INITDB_DATABASE: tramites_db
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-      - ./mongo-init:/docker-entrypoint-initdb.d
+    networks:
+      - tramites_network
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ia-service:
+    build:
+      context: ../2doPMicroservicio
+    image: tramites/ia-service
+    container_name: tramites_ia
+    restart: always
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/tramites_db
+      LOG_LEVEL: INFO
+      CORS_ORIGINS: '["http://localhost:8080"]'
+    ports:
+      - "8001:8001"          # expuesto para /docs; en prod puedes quitarlo
+    depends_on:
+      - mongodb
     networks:
       - tramites_network
 
-  mongo-express:
-    image: mongo-express:latest
-    container_name: tramites_mongo_express
+  backend:
+    build:
+      context: .
+    image: tramites/backend
+    container_name: tramites_backend
     restart: always
+    # La conexión a Mongo la maneja el bean MongoConfig (lee app.mongo.uri), porque
+    # Spring Boot 4.0.6 ignora la config estándar de Mongo. El resto de propiedades
+    # se pasan como argumentos (mayor precedencia). $$JAVA_OPTS lo expande el shell.
+    entrypoint:
+      - sh
+      - -c
+      - >-
+        exec java $$JAVA_OPTS -jar /app/app.jar
+        --app.mongo.uri=mongodb://mongodb:27017/tramites_db
+        --ia.service.url=http://ia-service:8001
+        --aws.s3.enabled=false
+        --app.seed.reset=true
     ports:
-      - "8081:8081"
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: "12345678"
-      ME_CONFIG_MONGODB_URL: mongodb://admin:12345678@mongodb:27017/
-      ME_CONFIG_BASICAUTH: false
+      - "8080:8080"
     depends_on:
       - mongodb
+      - ia-service
     networks:
       - tramites_network
 
