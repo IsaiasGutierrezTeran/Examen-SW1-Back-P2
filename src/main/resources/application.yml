@@ -43,6 +43,15 @@ aws:
     session-token: ${AWS_SESSION_TOKEN:}          # AWS Academy
   enabled: ${AWS_S3_ENABLED:false}                # false = no se crea S3Client (útil hasta tener credenciales)
 
+# === Parte 2 · Google Cloud Storage (almacenamiento de documentos) ===
+# En la VM usa la cuenta de servicio adjunta (Application Default Credentials),
+# sin claves. Habilitar con GCS_ENABLED=true y GCS_BUCKET=<nombre-del-bucket>.
+gcs:
+  enabled: ${GCS_ENABLED:false}
+  bucket: ${GCS_BUCKET:}
+  project-id: ${GCS_PROJECT_ID:}
+  presigned-ttl-seconds: 300
+
 # === Parte 2 · Microservicio IA (proxy) ===
 ia:
   service:

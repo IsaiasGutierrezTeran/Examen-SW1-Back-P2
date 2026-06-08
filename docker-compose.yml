@@ -70,6 +70,8 @@ services:
         --app.mongo.uri=mongodb://mongodb:27017/tramites_db
         --ia.service.url=http://ia-service:8001
         --aws.s3.enabled=false
+        --gcs.enabled=true
+        --gcs.bucket=tramites-docs-confident-truth-498714-b2
         --app.seed.reset=true
     ports:
       - "8080:8080"
