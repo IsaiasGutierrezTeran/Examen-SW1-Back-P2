@@ -23,6 +23,17 @@ public class DepartamentoSeeder {
                 "Revision y aprobacion de contratos");
         crearDepto("OPE", "Operaciones",
                 "Ejecucion y cierre de trabajos de campo");
+        // Departamentos de la empresa de redes y telecomunicaciones
+        crearDepto("RED", "Redes y Fibra Optica",
+                "Tendido, empalme y mantenimiento de la red de fibra optica");
+        crearDepto("INF", "Infraestructura",
+                "Nodos, antenas y equipamiento de la red de telecomunicaciones");
+        crearDepto("SOP", "Soporte Tecnico",
+                "Atencion de averias, soporte remoto y mesa de ayuda 24/7");
+        crearDepto("COM", "Comercial y Ventas",
+                "Contratacion de planes de internet, telefonia y TV");
+        crearDepto("FAC", "Facturacion y Cobranzas",
+                "Emision de facturas, gestion de pagos y reconexiones");
         log.info("[Seeder] Departamentos OK");
     }
 

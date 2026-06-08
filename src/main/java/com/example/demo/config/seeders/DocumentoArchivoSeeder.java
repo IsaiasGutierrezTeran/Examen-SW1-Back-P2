@@ -54,15 +54,15 @@ public class DocumentoArchivoSeeder {
     @Autowired private RequisitoDocumentoService requisitoService;
     @Autowired private DocumentoArchivoService docService;
 
-    @Value("${aws.enabled:false}") private boolean s3Enabled;
+    @Value("${gcs.enabled:false}") private boolean storageEnabled;
 
     public void seed() {
         if (docArchivoRepo.count() > 0) {
             log.info("[Seeder] DocumentoArchivo ya existen, se omite");
             return;
         }
-        if (!s3Enabled) {
-            log.info("[Seeder] DocumentoArchivo omitido (S3 deshabilitado)");
+        if (!storageEnabled) {
+            log.info("[Seeder] DocumentoArchivo omitido (almacenamiento GCS deshabilitado)");
             return;
         }
 
