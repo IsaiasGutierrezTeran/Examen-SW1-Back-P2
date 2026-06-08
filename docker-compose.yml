@@ -72,7 +72,7 @@ services:
         --aws.s3.enabled=false
         --gcs.enabled=true
         --gcs.bucket=tramites-docs-confident-truth-498714-b2
-        --app.seed.reset=true
+        --app.seed.reset=false
     ports:
       - "8080:8080"
     depends_on:
