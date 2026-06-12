@@ -1,15 +1,14 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.AlertaAnomalia;
-import com.example.demo.models.Tramite;
-import com.example.demo.repositories.AlertaAnomaliaRepository;
-import com.example.demo.repositories.TramiteRepository;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
+import com.example.demo.p8reportes.AlertaAnomalia;
+import com.example.demo.p8reportes.AlertaAnomaliaRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 @Slf4j

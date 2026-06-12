@@ -1,7 +1,7 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.Permiso;
-import com.example.demo.repositories.PermisoRepository;
+import com.example.demo.p1seguridad.Permiso;
+import com.example.demo.p1seguridad.PermisoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

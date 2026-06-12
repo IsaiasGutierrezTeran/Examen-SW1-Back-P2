@@ -1,0 +1,68 @@
+package com.example.demo.p4tramites;
+
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/tramites/{id}")
+public class TramiteDecisionController {
+
+    @Autowired
+    private TramiteDecisionService decisionService;
+
+    @PostMapping({"/reasignar", "/derivar"})
+    @PreAuthorize("hasRole('FUNCIONARIO')")
+    public ResponseEntity<Tramite> reasignarTramite(
+            @PathVariable String id,
+            @RequestBody DerivarTramiteRequest request,
+            Authentication authentication) {
+        Tramite t = decisionService.reasignarTramite(id, request, authentication.getName());
+        return ResponseEntity.ok(t);
+    }
+
+    @PostMapping("/devolver")
+    @PreAuthorize("hasRole('FUNCIONARIO')")
+    public ResponseEntity<Tramite> devolverTramite(
+            @PathVariable String id,
+            @RequestBody DevolverTramiteRequest request,
+            Authentication authentication) {
+        Tramite t = decisionService.devolverTramite(id, request, authentication.getName());
+        return ResponseEntity.ok(t);
+    }
+
+    @PostMapping(value = "/decision-final", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('FUNCIONARIO')")
+    public ResponseEntity<Tramite> decisionFinal(
+            @PathVariable String id,
+            @RequestBody DecisionFinalRequest request,
+            Authentication authentication) {
+        Tramite t = decisionService.decisionFinal(id, request, authentication.getName());
+        return ResponseEntity.ok(t);
+    }
+
+    @PostMapping(value = "/decision-final", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('FUNCIONARIO')")
+    public ResponseEntity<Tramite> decisionFinalConResolucion(
+            @PathVariable String id,
+            @RequestParam String decision,
+            @RequestParam(required = false) String justificacion,
+            @RequestParam(value = "archivo", required = false) MultipartFile archivo,
+            Authentication authentication,
+            HttpServletRequest httpRequest) {
+        DecisionFinalRequest request = new DecisionFinalRequest();
+        request.setDecision(decision);
+        request.setJustificacion(justificacion);
+        String rol = authentication.getAuthorities().stream()
+                .findFirst().map(a -> a.getAuthority()).orElse("");
+        Tramite t = decisionService.decisionFinal(id, request, authentication.getName(),
+                archivo, rol, httpRequest.getRemoteAddr(), httpRequest.getHeader("User-Agent"));
+        return ResponseEntity.ok(t);
+    }
+}

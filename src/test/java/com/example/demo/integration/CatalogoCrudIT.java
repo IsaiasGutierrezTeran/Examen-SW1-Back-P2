@@ -1,6 +1,20 @@
 package com.example.demo.integration;
 
+import com.example.demo.p1seguridad.Permiso;
+import com.example.demo.p1seguridad.PermisoController;
+import com.example.demo.p1seguridad.Rol;
+import com.example.demo.p1seguridad.Usuario;
+import com.example.demo.p2organizacion.RolController;
+import com.example.demo.p2organizacion.UsuarioController;
+import com.example.demo.p3politicas.Actividad;
+import com.example.demo.p3politicas.ActividadController;
+import com.example.demo.p4tramites.Documento;
+import com.example.demo.p4tramites.DocumentoController;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,12 +22,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

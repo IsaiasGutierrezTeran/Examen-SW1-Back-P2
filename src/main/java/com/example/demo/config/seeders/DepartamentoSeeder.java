@@ -1,12 +1,11 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.Departamento;
-import com.example.demo.repositories.DepartamentoRepository;
+import com.example.demo.p2organizacion.Departamento;
+import com.example.demo.p2organizacion.DepartamentoRepository;
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @Slf4j

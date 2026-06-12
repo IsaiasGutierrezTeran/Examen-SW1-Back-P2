@@ -36,6 +36,7 @@ public class MasterSeeder {
     @Autowired private AlertaAnomaliaSeeder       alertaAnomaliaSeeder;
     @Autowired private TramiteIaPatchSeeder       tramiteIaPatchSeeder;
     @Autowired private DatosMasivosSeeder         datosMasivosSeeder;
+    @Autowired private ForkDemoSeeder             forkDemoSeeder;
 
     public void seedAll() {
         log.info("========================================");
@@ -75,6 +76,10 @@ public class MasterSeeder {
         alertaAnomaliaSeeder.seed();
 
         datosMasivosSeeder.seed();
+
+        // Al final: trámite vivo en paralelo (fork TEC+LEG) para demo de
+        // bandeja compartida entre funcionarios de distintos departamentos.
+        forkDemoSeeder.seed();
 
         log.info("========================================");
         log.info("       SEED COMPLETADO EXITOSAMENTE    ");

@@ -1,6 +1,8 @@
 package com.example.demo.integration;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -10,10 +12,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.util.Map;
-import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

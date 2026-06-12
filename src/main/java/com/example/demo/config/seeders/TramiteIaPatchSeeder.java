@@ -1,18 +1,17 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.EstadoTramite;
-import com.example.demo.models.NodoDiagrama;
-import com.example.demo.models.Tramite;
-import com.example.demo.repositories.DiagramaWorkflowRepository;
-import com.example.demo.repositories.NodoDiagramaRepository;
-import com.example.demo.repositories.TramiteRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import com.example.demo.p3politicas.DiagramaWorkflowRepository;
+import com.example.demo.p3politicas.NodoDiagrama;
+import com.example.demo.p3politicas.NodoDiagramaRepository;
+import com.example.demo.p4tramites.EstadoTramite;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j

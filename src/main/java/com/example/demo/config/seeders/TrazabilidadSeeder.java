@@ -1,16 +1,12 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.NodoDiagrama;
-import com.example.demo.models.Tramite;
-import com.example.demo.models.Trazabilidad;
-import com.example.demo.repositories.NodoDiagramaRepository;
-import com.example.demo.repositories.TramiteRepository;
-import com.example.demo.repositories.TrazabilidadRepository;
-import com.example.demo.repositories.UsuarioRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import com.example.demo.p1seguridad.UsuarioRepository;
+import com.example.demo.p3politicas.NodoDiagrama;
+import com.example.demo.p3politicas.NodoDiagramaRepository;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
+import com.example.demo.p8reportes.Trazabilidad;
+import com.example.demo.p8reportes.TrazabilidadRepository;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,6 +15,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j

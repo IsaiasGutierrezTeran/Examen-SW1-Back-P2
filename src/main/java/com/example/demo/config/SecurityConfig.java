@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
-import com.example.demo.security.JwtAuthFilter;
+import com.example.demo.p1seguridad.JwtAuthFilter;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
@@ -136,11 +135,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET,  "/api/repositorios/**").authenticated()
                 .requestMatchers(HttpMethod.GET,  "/api/tramites/*/repositorio").authenticated()
 
+                .requestMatchers(HttpMethod.POST, "/api/tramites/*/documentos/blank").hasAnyRole("FUNCIONARIO", "ADMINISTRADOR")
                 .requestMatchers(HttpMethod.POST, "/api/tramites/*/documentos").hasAnyRole("FUNCIONARIO", "ADMINISTRADOR", "CLIENTE")
 
                 .requestMatchers(HttpMethod.POST, "/api/documentos/*/versiones").hasAnyRole("FUNCIONARIO", "ADMINISTRADOR")
 
                 .requestMatchers(HttpMethod.POST, "/api/documentos/*/onlyoffice/callback").permitAll()
+                .requestMatchers(HttpMethod.GET,  "/api/documentos/*/onlyoffice/contenido").permitAll()
 
                 .requestMatchers(HttpMethod.GET,  "/api/documentos/*/auditoria").hasRole("ADMINISTRADOR")
 

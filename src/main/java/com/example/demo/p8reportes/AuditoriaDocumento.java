@@ -1,0 +1,42 @@
+package com.example.demo.p8reportes;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "auditoria_documentos")
+@CompoundIndexes({
+        @CompoundIndex(name = "idx_doc_ts",     def = "{'documentoArchivoId': 1, 'timestamp': -1}"),
+        @CompoundIndex(name = "idx_user_ts",    def = "{'usuarioId': 1, 'timestamp': -1}"),
+        @CompoundIndex(name = "idx_accion_ts",  def = "{'accion': 1, 'timestamp': -1}")
+})
+public class AuditoriaDocumento {
+
+    @Id
+    private String id;
+
+    private String documentoArchivoId;
+    private String versionId;
+
+    private String usuarioId;
+    private String usuarioNombre;
+    private String rol;
+
+    private String accion;
+
+    private String ip;
+    private String userAgent;
+
+    private LocalDateTime timestamp;
+
+    private Map<String, Object> detalle;
+}

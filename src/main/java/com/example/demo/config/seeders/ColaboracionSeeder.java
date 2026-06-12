@@ -1,16 +1,15 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.ColaboracionDiagrama;
-import com.example.demo.models.DiagramaWorkflow;
-import com.example.demo.repositories.ColaboracionDiagramaRepository;
-import com.example.demo.repositories.DiagramaWorkflowRepository;
-import com.example.demo.repositories.UsuarioRepository;
+import com.example.demo.p1seguridad.UsuarioRepository;
+import com.example.demo.p3politicas.ColaboracionDiagrama;
+import com.example.demo.p3politicas.ColaboracionDiagramaRepository;
+import com.example.demo.p3politicas.DiagramaWorkflow;
+import com.example.demo.p3politicas.DiagramaWorkflowRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 @Slf4j

@@ -1,16 +1,35 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.*;
-import com.example.demo.repositories.*;
+import com.example.demo.p1seguridad.Rol;
+import com.example.demo.p1seguridad.RolRepository;
+import com.example.demo.p1seguridad.Usuario;
+import com.example.demo.p1seguridad.UsuarioRepository;
+import com.example.demo.p2organizacion.Departamento;
+import com.example.demo.p2organizacion.DepartamentoRepository;
+import com.example.demo.p3politicas.Actividad;
+import com.example.demo.p3politicas.ActividadRepository;
+import com.example.demo.p3politicas.DiagramaWorkflow;
+import com.example.demo.p3politicas.DiagramaWorkflowRepository;
+import com.example.demo.p3politicas.FlujoTransicion;
+import com.example.demo.p3politicas.FlujoTransicionRepository;
+import com.example.demo.p3politicas.NodoDiagrama;
+import com.example.demo.p3politicas.NodoDiagramaRepository;
+import com.example.demo.p3politicas.PoliticaNegocio;
+import com.example.demo.p3politicas.PoliticaNegocioRepository;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
+import com.example.demo.p8reportes.AlertaAnomalia;
+import com.example.demo.p8reportes.AlertaAnomaliaRepository;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
 
 @Component
 @Slf4j

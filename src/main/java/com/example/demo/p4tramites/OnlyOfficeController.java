@@ -1,0 +1,70 @@
+package com.example.demo.p4tramites;
+
+import io.swagger.v3.oas.annotations.Operation;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+
+import org.springframework.web.bind.annotation.*;
+
+
+/**
+ * Edición colaborativa de documentos Office (.docx/.xlsx/.pptx) del repositorio
+ * vía OnlyOffice Document Server.
+ */
+@RestController
+@RequestMapping("/api/documentos")
+public class OnlyOfficeController {
+
+    @Autowired private OnlyOfficeService onlyOffice;
+
+    /** Config firmada del editor para abrir un documento (la consume el navegador). */
+    @GetMapping("/{id}/onlyoffice/config")
+    @PreAuthorize("hasAnyRole('FUNCIONARIO','ADMINISTRADOR')")
+    @Operation(summary = "Config del editor OnlyOffice para co-editar un documento Office")
+    public ResponseEntity<Map<String, Object>> config(
+            @PathVariable String id,
+            @RequestParam(defaultValue = "edit") String mode,
+            Authentication auth) {
+        Map<String, Object> resp = new LinkedHashMap<>();
+        resp.put("serverUrl", onlyOffice.serverUrl());
+        resp.put("config", onlyOffice.construirConfig(id, auth.getName(), mode));
+        return ResponseEntity.ok(resp);
+    }
+
+    /** Fuerza el guardado de la co-edición en curso (crea nueva versión en S3). */
+    @PostMapping("/{id}/onlyoffice/forzar-guardado")
+    @PreAuthorize("hasAnyRole('FUNCIONARIO','ADMINISTRADOR')")
+    @Operation(summary = "Fuerza el guardado de la co-edición OnlyOffice (nueva versión)")
+    public ResponseEntity<Map<String, Object>> forzarGuardado(@PathVariable String id) {
+        return ResponseEntity.ok(onlyOffice.forzarGuardado(id));
+    }
+
+    /**
+     * Callback que invoca el Document Server (server-to-server, NO el navegador):
+     * al guardar la co-edición, persiste una nueva versión. Va sin auth de usuario
+     * (lo protege el JWT de OnlyOffice). Debe responder {"error":0}.
+     */
+    @PostMapping("/{id}/onlyoffice/callback")
+    public ResponseEntity<Map<String, Object>> callback(@PathVariable String id,
+                                                        @RequestBody Map<String, Object> body) {
+        return ResponseEntity.ok(onlyOffice.procesarCallback(id, body));
+    }
+
+    /**
+     * Contenido del documento que descarga el Document Server (server-to-server,
+     * red interna). El DS NO alcanza S3 desde la VPC; el backend se lo sirve
+     * bajándolo por SDK. Va sin auth de usuario: lo protege el token firmado.
+     */
+    @GetMapping("/{id}/onlyoffice/contenido")
+    public ResponseEntity<byte[]> contenido(@PathVariable String id,
+                                            @RequestParam String token) {
+        var c = onlyOffice.contenido(id, token);
+        return ResponseEntity.ok()
+                .contentType(org.springframework.http.MediaType.parseMediaType(c.mime()))
+                .body(c.bytes());
+    }
+}

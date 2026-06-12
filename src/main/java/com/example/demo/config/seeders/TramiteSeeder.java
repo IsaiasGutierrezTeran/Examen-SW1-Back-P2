@@ -1,15 +1,19 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.NodoDiagrama;
-import com.example.demo.models.Tramite;
-import com.example.demo.repositories.*;
+import com.example.demo.p1seguridad.UsuarioRepository;
+import com.example.demo.p3politicas.NodoDiagrama;
+import com.example.demo.p3politicas.NodoDiagramaRepository;
+import com.example.demo.p3politicas.PoliticaNegocioRepository;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Component
 @Slf4j

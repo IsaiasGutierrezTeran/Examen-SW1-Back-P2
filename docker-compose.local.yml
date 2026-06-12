@@ -62,6 +62,16 @@ services:
       AWS_REGION: us-east-1
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin123
+      # ── OnlyOffice (co-edición Office) ──
+      # server-url: lo carga el NAVEGADOR (host) → puerto publicado del DS.
+      # callback-base: lo usa el DS (red docker) para bajar el original y guardar.
+      # jwt-secret: DEBE coincidir con JWT_SECRET del servicio onlyoffice.
+      ONLYOFFICE_ENABLED: "true"
+      ONLYOFFICE_SERVER_URL: http://localhost:8082
+      ONLYOFFICE_CALLBACK_BASE: http://backend:8080
+      # internal-url: backend → DS (CommandService/forcesave) por la red docker.
+      ONLYOFFICE_INTERNAL_URL: http://onlyoffice
+      ONLYOFFICE_JWT_SECRET: motor-onlyoffice-jwt-secret-cambiar-en-prod-256bits
       JAVA_OPTS: ""
     entrypoint:
       - sh
@@ -78,6 +88,33 @@ services:
       - minio-init
     networks:
       - tramites_net
+
+  # OnlyOffice Document Server: co-edición en vivo de Office (.docx/.xlsx/.pptx).
+  # Pesado (~2 GB imagen, ~1.5 GB RAM): el primer arranque tarda 1-2 min en estar
+  # "healthy". El backend NO depende de él al arrancar (solo se usa al abrir un doc).
+  onlyoffice:
+    image: onlyoffice/documentserver:latest
+    container_name: tramites_onlyoffice
+    restart: always
+    environment:
+      JWT_ENABLED: "true"
+      JWT_SECRET: motor-onlyoffice-jwt-secret-cambiar-en-prod-256bits
+      JWT_HEADER: Authorization
+      JWT_IN_BODY: "true"
+    ports:
+      - "8082:80"
+    volumes:
+      - onlyoffice_data:/var/www/onlyoffice/Data
+      - onlyoffice_logs:/var/log/onlyoffice
+      - onlyoffice_cache:/var/lib/onlyoffice
+    networks:
+      - tramites_net
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -sf http://localhost/healthcheck | grep -q true"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
 
   # MinIO: servidor S3-compatible local (almacenamiento de documentos sin AWS).
   minio:
@@ -115,6 +152,9 @@ services:
 volumes:
   mongodb_local:
   minio_data:
+  onlyoffice_data:
+  onlyoffice_logs:
+  onlyoffice_cache:
 
 networks:
   tramites_net:

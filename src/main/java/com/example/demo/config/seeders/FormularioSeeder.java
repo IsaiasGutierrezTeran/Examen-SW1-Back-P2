@@ -1,17 +1,17 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.CampoPlantilla;
-import com.example.demo.models.FormularioPlantilla;
-import com.example.demo.models.NodoDiagrama;
-import com.example.demo.repositories.CampoPlantillaRepository;
-import com.example.demo.repositories.FormularioPlantillaRepository;
-import com.example.demo.repositories.NodoDiagramaRepository;
+import com.example.demo.p3politicas.Actividad;
+import com.example.demo.p3politicas.CampoPlantilla;
+import com.example.demo.p3politicas.CampoPlantillaRepository;
+import com.example.demo.p3politicas.FormularioPlantilla;
+import com.example.demo.p3politicas.FormularioPlantillaRepository;
+import com.example.demo.p3politicas.NodoDiagrama;
+import com.example.demo.p3politicas.NodoDiagramaRepository;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @Slf4j

@@ -1,11 +1,14 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.AgenteRequest;
-import com.example.demo.dto.AgenteResponse;
-import com.example.demo.models.PoliticaNegocio;
-import com.example.demo.models.Tramite;
-import com.example.demo.repositories.PoliticaNegocioRepository;
-import com.example.demo.repositories.TramiteRepository;
+import com.example.demo.p3politicas.PoliticaNegocio;
+import com.example.demo.p3politicas.PoliticaNegocioRepository;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
+import com.example.demo.p9ia.AgenteAsistenciaService;
+import com.example.demo.p9ia.AgenteRequest;
+import com.example.demo.p9ia.AgenteResponse;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,10 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 

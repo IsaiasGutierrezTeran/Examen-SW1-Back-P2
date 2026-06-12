@@ -1,16 +1,21 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.Actividad;
-import com.example.demo.models.CuelloBotella;
-import com.example.demo.models.MetricaTiempo;
-import com.example.demo.models.Tramite;
-import com.example.demo.repositories.*;
+import com.example.demo.p2organizacion.DepartamentoRepository;
+import com.example.demo.p3politicas.Actividad;
+import com.example.demo.p3politicas.ActividadRepository;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
+import com.example.demo.p8reportes.CuelloBotella;
+import com.example.demo.p8reportes.CuelloBotellaRepository;
+import com.example.demo.p8reportes.MetricaTiempo;
+import com.example.demo.p8reportes.MetricaTiempoRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Component
 @Slf4j

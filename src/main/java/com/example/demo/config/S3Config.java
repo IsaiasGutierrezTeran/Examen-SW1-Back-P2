@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import java.net.URI;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +14,6 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-
-import java.net.URI;
 
 @Configuration
 @ConditionalOnProperty(name = "aws.enabled", havingValue = "true")

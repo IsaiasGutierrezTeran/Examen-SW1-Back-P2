@@ -1,14 +1,13 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.Reporte;
-import com.example.demo.repositories.ReporteRepository;
-import com.example.demo.repositories.UsuarioRepository;
+import com.example.demo.p1seguridad.UsuarioRepository;
+import com.example.demo.p8reportes.Reporte;
+import com.example.demo.p8reportes.ReporteRepository;
+import java.time.LocalDateTime;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @Component
 @Slf4j

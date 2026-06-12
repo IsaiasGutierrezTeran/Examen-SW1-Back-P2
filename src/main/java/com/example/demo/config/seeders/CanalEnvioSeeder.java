@@ -1,12 +1,11 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.CanalEnvio;
-import com.example.demo.repositories.CanalEnvioRepository;
+import com.example.demo.p7notificaciones.CanalEnvio;
+import com.example.demo.p7notificaciones.CanalEnvioRepository;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 @Slf4j

@@ -1,13 +1,13 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.RepositorioDocumental;
-import com.example.demo.repositories.RepositorioDocumentalRepository;
-import com.example.demo.repositories.TramiteRepository;
+import com.example.demo.p4tramites.RepositorioDocumental;
+import com.example.demo.p4tramites.RepositorioDocumentalRepository;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @Slf4j

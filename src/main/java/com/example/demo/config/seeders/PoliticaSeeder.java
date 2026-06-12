@@ -1,13 +1,12 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.PoliticaNegocio;
-import com.example.demo.repositories.PoliticaNegocioRepository;
-import com.example.demo.repositories.UsuarioRepository;
+import com.example.demo.p1seguridad.UsuarioRepository;
+import com.example.demo.p3politicas.PoliticaNegocio;
+import com.example.demo.p3politicas.PoliticaNegocioRepository;
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @Slf4j
@@ -31,6 +30,14 @@ public class PoliticaSeeder {
                 "Cambio de titular",
                 "Proceso administrativo para transferir la titularidad de un contrato de servicio",
                 "administrativo", "borrador");
+
+        // Política con FORK a departamentos DISTINTOS (TEC + LEG en paralelo):
+        // el trámite cae a la vez en la bandeja del funcionario técnico y del legal,
+        // que comparten el mismo expediente y sus documentos.
+        crearPolitica(
+                "Inspeccion conjunta tecnico-legal",
+                "Inspeccion en paralelo: el area tecnica y el area legal revisan el mismo expediente al mismo tiempo y comparten documentos",
+                "inspecciones", "activa");
 
         log.info("[Seeder] Politicas OK");
     }

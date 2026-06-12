@@ -1,16 +1,16 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.Actividad;
-import com.example.demo.repositories.ActividadRepository;
-import com.example.demo.repositories.DepartamentoRepository;
-import com.example.demo.repositories.DocumentoRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import com.example.demo.p2organizacion.DepartamentoRepository;
+import com.example.demo.p3politicas.Actividad;
+import com.example.demo.p3politicas.ActividadRepository;
+import com.example.demo.p4tramites.DocumentoRepository;
+import com.example.demo.p4tramites.RequisitoDocumento;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
@@ -125,8 +125,8 @@ public class ActividadSeeder {
         a.setDocumentoIds(documentoIds);
 
         a.setDocumentosRequeridos(documentoIds.stream()
-                .map(id -> new com.example.demo.models.RequisitoDocumento(
-                        id, com.example.demo.models.RequisitoDocumento.CLIENTE, true))
+                .map(id -> new com.example.demo.p4tramites.RequisitoDocumento(
+                        id, com.example.demo.p4tramites.RequisitoDocumento.CLIENTE, true))
                 .toList());
 
         actividadRepository.save(a);

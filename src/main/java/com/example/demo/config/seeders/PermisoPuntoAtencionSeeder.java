@@ -1,15 +1,14 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.PermisoPuntoAtencion;
-import com.example.demo.repositories.ActividadRepository;
-import com.example.demo.repositories.PermisoPuntoAtencionRepository;
-import com.example.demo.repositories.PoliticaNegocioRepository;
+import com.example.demo.p2organizacion.PermisoPuntoAtencion;
+import com.example.demo.p2organizacion.PermisoPuntoAtencionRepository;
+import com.example.demo.p3politicas.ActividadRepository;
+import com.example.demo.p3politicas.PoliticaNegocioRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 @Slf4j

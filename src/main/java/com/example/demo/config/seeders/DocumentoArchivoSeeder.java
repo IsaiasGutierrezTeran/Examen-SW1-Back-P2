@@ -1,33 +1,31 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.Actividad;
-import com.example.demo.models.Documento;
-import com.example.demo.models.DocumentoArchivo;
-import com.example.demo.models.EstadoSeccion;
-import com.example.demo.models.NodoDiagrama;
-import com.example.demo.models.PoliticaNegocio;
-import com.example.demo.models.RequisitoDocumento;
-import com.example.demo.models.SeccionExpediente;
-import com.example.demo.models.Tramite;
-import com.example.demo.repositories.SeccionExpedienteRepository;
-import com.example.demo.repositories.ActividadRepository;
-import com.example.demo.repositories.DocumentoArchivoRepository;
-import com.example.demo.repositories.DocumentoRepository;
-import com.example.demo.repositories.NodoDiagramaRepository;
-import com.example.demo.repositories.PoliticaNegocioRepository;
-import com.example.demo.repositories.TramiteRepository;
-import com.example.demo.services.DocumentoArchivoService;
-import com.example.demo.services.RequisitoDocumentoService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
+import com.example.demo.p3politicas.Actividad;
+import com.example.demo.p3politicas.ActividadRepository;
+import com.example.demo.p3politicas.NodoDiagrama;
+import com.example.demo.p3politicas.NodoDiagramaRepository;
+import com.example.demo.p3politicas.PoliticaNegocioRepository;
+import com.example.demo.p4tramites.Documento;
+import com.example.demo.p4tramites.DocumentoArchivo;
+import com.example.demo.p4tramites.DocumentoArchivoRepository;
+import com.example.demo.p4tramites.DocumentoArchivoService;
+import com.example.demo.p4tramites.DocumentoRepository;
+import com.example.demo.p4tramites.RequisitoDocumento;
+import com.example.demo.p4tramites.RequisitoDocumentoService;
+import com.example.demo.p4tramites.SeccionExpediente;
+import com.example.demo.p4tramites.SeccionExpedienteRepository;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
+import com.example.demo.p5bandeja.EstadoSeccion;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j

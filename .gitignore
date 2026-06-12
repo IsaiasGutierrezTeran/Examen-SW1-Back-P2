@@ -56,3 +56,5 @@ guias2/
 qc
 __pycache__/
 *.pyc
+.src_backup_pkg/
+repackage.py

@@ -1,15 +1,27 @@
 package com.example.demo.config.seeders;
 
-import com.example.demo.models.*;
-import com.example.demo.repositories.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import com.example.demo.p1seguridad.UsuarioRepository;
+import com.example.demo.p2organizacion.DepartamentoRepository;
+import com.example.demo.p3politicas.NodoDiagrama;
+import com.example.demo.p3politicas.NodoDiagramaRepository;
+import com.example.demo.p4tramites.ExpedienteDigital;
+import com.example.demo.p4tramites.ExpedienteDigitalRepository;
+import com.example.demo.p4tramites.SeccionExpediente;
+import com.example.demo.p4tramites.SeccionExpedienteRepository;
+import com.example.demo.p4tramites.Tramite;
+import com.example.demo.p4tramites.TramiteRepository;
+import com.example.demo.p5bandeja.CampoSeccion;
+import com.example.demo.p5bandeja.CampoSeccionRepository;
+import com.example.demo.p5bandeja.EstadoSeccion;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+
 
 @Component
 @Slf4j
