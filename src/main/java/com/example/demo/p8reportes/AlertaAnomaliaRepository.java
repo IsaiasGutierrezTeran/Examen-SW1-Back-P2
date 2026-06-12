@@ -10,4 +10,7 @@ public interface AlertaAnomaliaRepository extends MongoRepository<AlertaAnomalia
     List<AlertaAnomalia> findByTramiteIdOrderByFechaDeteccionDesc(String tramiteId);
 
     List<AlertaAnomalia> findByFalsoPositivoFalseOrderByFechaDeteccionDesc();
+
+    // Para deduplicar: ya existe una alerta de esta categoria para el tramite.
+    List<AlertaAnomalia> findByTramiteIdAndCategoria(String tramiteId, String categoria);
 }

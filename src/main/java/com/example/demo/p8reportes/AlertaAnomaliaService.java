@@ -56,9 +56,18 @@ public class AlertaAnomaliaService {
 
         List<AlertaAnomalia> creadas = new ArrayList<>();
         for (Map<String, Object> a : anomalias) {
+            String tramiteId = stringDe(a.get("tramite_id"));
+            String categoria = stringDe(a.get("categoria"));
+
+            // Deduplicar: si ya existe una alerta de esta categoria para el
+            // tramite (sea activa o marcada como falso positivo) NO se crea otra.
+            // Asi "Detectar ahora" no duplica y un falso positivo no reaparece.
+            boolean yaExiste = !alertaRepo.findByTramiteIdAndCategoria(tramiteId, categoria).isEmpty();
+            if (yaExiste) continue;
+
             AlertaAnomalia alerta = new AlertaAnomalia();
-            alerta.setTramiteId(stringDe(a.get("tramite_id")));
-            alerta.setCategoria(stringDe(a.get("categoria")));
+            alerta.setTramiteId(tramiteId);
+            alerta.setCategoria(categoria);
             alerta.setScore(floatDe(a.get("score")));
             alerta.setDescripcion(stringDe(a.get("descripcion")));
             alerta.setFalsoPositivo(false);
