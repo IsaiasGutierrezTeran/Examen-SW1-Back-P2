@@ -12,6 +12,7 @@ import com.example.demo.p4tramites.VersionDocumento;
 import com.example.demo.p4tramites.VersionDocumentoRepository;
 import com.example.demo.p4tramites.VersionDocumentoResponse;
 import com.example.demo.p8reportes.AuditoriaDocumentoService;
+import com.example.demo.util.S3KeyUtil;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -20,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -79,11 +79,14 @@ public class VersionadoService {
         }
 
         int nuevoNumero = actual.getNumeroVersion() + 1;
-        String uuid = UUID.randomUUID().toString();
         String ext = extensionDe(archivo.getOriginalFilename());
-        // s3Key derivada del bucketKey del repo (ya es "tramites/{tramiteId}/")
+        // s3Key legible y agrupada con las versiones previas del mismo documento:
+        // tramites/{tramiteId}/{nombre-real}-{idCorto}-v{n}.ext
         var repo = repositorioService.buscarPorId(doc.getRepositorioId());
-        String s3Key = repo.getBucketKey() + uuid + "-v" + nuevoNumero + ext;
+        String nombreBase = S3KeyUtil.primerNoVacio(doc.getNombreLogico(), doc.getTipoDocumento());
+        String s3Key = repo.getBucketKey()
+                + S3KeyUtil.slug(nombreBase) + "-" + S3KeyUtil.shortId(doc.getId())
+                + "-v" + nuevoNumero + ext;
 
         // Sube primero a S3; si falla, no se modifica nada en Mongo
         s3.upload(s3Key, new ByteArrayInputStream(bytes),
@@ -145,7 +148,10 @@ public class VersionadoService {
         int nuevoNumero = actual.getNumeroVersion() + 1;
         String extNorm = (ext == null || ext.isBlank()) ? "" : (ext.startsWith(".") ? ext : "." + ext);
         var repo = repositorioService.buscarPorId(doc.getRepositorioId());
-        String s3Key = repo.getBucketKey() + UUID.randomUUID() + "-v" + nuevoNumero + extNorm;
+        String nombreBase = S3KeyUtil.primerNoVacio(doc.getNombreLogico(), doc.getTipoDocumento());
+        String s3Key = repo.getBucketKey()
+                + S3KeyUtil.slug(nombreBase) + "-" + S3KeyUtil.shortId(doc.getId())
+                + "-v" + nuevoNumero + extNorm;
 
         s3.upload(s3Key, new ByteArrayInputStream(bytes), mimeType, bytes.length);
 

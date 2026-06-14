@@ -8,7 +8,6 @@ import com.example.demo.p4tramites.S3StorageService;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -100,8 +99,13 @@ public class UsuarioService {
             throw new IllegalArgumentException("El archivo está vacío.");
         }
         String original = file.getOriginalFilename() != null ? file.getOriginalFilename() : "foto";
-        String limpio = original.replaceAll("[^a-zA-Z0-9._-]", "_");
-        String key = "perfiles/" + id + "/" + UUID.randomUUID() + "-" + limpio;
+        String ext = original.contains(".") ? original.substring(original.lastIndexOf('.')) : "";
+        // Key legible: perfiles/{nombre-archivo}-{idCorto}.ext
+        String nombreBase = com.example.demo.util.S3KeyUtil.primerNoVacio(
+                com.example.demo.util.S3KeyUtil.sinExtension(original), "foto");
+        String key = "perfiles/"
+                + com.example.demo.util.S3KeyUtil.slug(nombreBase)
+                + "-" + com.example.demo.util.S3KeyUtil.shortId(id) + ext;
         if (u.getFotoPerfil() != null && !u.getFotoPerfil().isBlank()) {
             try {
                 if (s3.exists(u.getFotoPerfil())) s3.delete(u.getFotoPerfil());

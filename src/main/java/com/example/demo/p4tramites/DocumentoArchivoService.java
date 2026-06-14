@@ -5,6 +5,7 @@ import com.example.demo.p3politicas.NodoDiagrama;
 import com.example.demo.p3politicas.NodoDiagramaRepository;
 import com.example.demo.p3politicas.WorkflowEngineService;
 import com.example.demo.p8reportes.AuditoriaDocumentoService;
+import com.example.demo.util.S3KeyUtil;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -13,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -109,9 +109,7 @@ public class DocumentoArchivoService {
             }
         }
 
-        String uuid = UUID.randomUUID().toString();
         String ext = extensionDe(archivo.getOriginalFilename());
-        String s3Key = repo.getBucketKey() + uuid + "-v1" + ext;
 
         DocumentoArchivo doc = new DocumentoArchivo();
         doc.setRepositorioId(repositorioId);
@@ -130,6 +128,12 @@ public class DocumentoArchivoService {
         doc.setFechaCreacion(LocalDateTime.now());
         doc.setActivo(true);
         doc = docRepo.save(doc);
+
+        // Key S3 legible: tramites/{tramiteId}/{nombre-real}-{idCorto}-v1.ext
+        String nombreBase = S3KeyUtil.primerNoVacio(
+                nombreLogico, S3KeyUtil.sinExtension(archivo.getOriginalFilename()), tipoDocumento);
+        String s3Key = repo.getBucketKey()
+                + S3KeyUtil.slug(nombreBase) + "-" + S3KeyUtil.shortId(doc.getId()) + "-v1" + ext;
 
         try {
             s3.upload(s3Key, new ByteArrayInputStream(bytes),
@@ -187,8 +191,6 @@ public class DocumentoArchivoService {
                                 String documentoRequeridoId, String nombreLogico, String tipoDocumento,
                                 byte[] bytes, String mimeType) {
         RepositorioDocumental repo = repositorioService.crearAlIniciarTramite(tramiteId, politicaId);
-        String uuid = UUID.randomUUID().toString();
-        String s3Key = repo.getBucketKey() + uuid + "-v1.pdf";
 
         DocumentoArchivo doc = new DocumentoArchivo();
         doc.setRepositorioId(repo.getId());
@@ -205,6 +207,10 @@ public class DocumentoArchivoService {
         doc.setFechaCreacion(LocalDateTime.now());
         doc.setActivo(true);
         doc = docRepo.save(doc);
+
+        String nombreBase = S3KeyUtil.primerNoVacio(nombreLogico, tipoDocumento);
+        String s3Key = repo.getBucketKey()
+                + S3KeyUtil.slug(nombreBase) + "-" + S3KeyUtil.shortId(doc.getId()) + "-v1.pdf";
 
         s3.upload(s3Key, new ByteArrayInputStream(bytes), mimeType, bytes.length);
 
@@ -242,9 +248,7 @@ public class DocumentoArchivoService {
         byte[] bytes = leerBytes(archivo);
         String hash = sha256(bytes);
 
-        String uuid = UUID.randomUUID().toString();
         String ext = extensionDe(archivo.getOriginalFilename());
-        String s3Key = repo.getBucketKey() + "resolucion/" + uuid + "-v1" + ext;
 
         DocumentoArchivo doc = new DocumentoArchivo();
         doc.setRepositorioId(repositorioId);
@@ -260,6 +264,12 @@ public class DocumentoArchivoService {
         doc.setFechaCreacion(LocalDateTime.now());
         doc.setActivo(true);
         doc = docRepo.save(doc);
+
+        // Key S3 legible bajo la subcarpeta resolucion/
+        String nombreBase = S3KeyUtil.primerNoVacio(
+                nombreLogico, S3KeyUtil.sinExtension(archivo.getOriginalFilename()), tipoDocumento);
+        String s3Key = repo.getBucketKey() + "resolucion/"
+                + S3KeyUtil.slug(nombreBase) + "-" + S3KeyUtil.shortId(doc.getId()) + "-v1" + ext;
 
         try {
             s3.upload(s3Key, new ByteArrayInputStream(bytes),
