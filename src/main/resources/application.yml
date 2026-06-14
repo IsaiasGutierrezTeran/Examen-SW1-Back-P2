@@ -52,7 +52,7 @@ aws:
 ia:
   service:
     url: ${IA_SERVICE_URL:http://localhost:8001}
-    timeout-ms: 8000
+    timeout-ms: 60000   # alto: Transcribe (AWS) es async y tarda ~20-30s
 
 # === Parte 2 · Schedulers IA (CU-43 riesgo, CU-45 anomalías) ===
 # Para dev se pueden desactivar — los endpoints manuales siguen disponibles.
