@@ -496,14 +496,23 @@ public class WorkflowController {
      *    que en paralelo solo aparecía un funcionario (el de funcionarioActualId).
      */
     private boolean asignadoAlFuncionario(Tramite t, String userId) {
-        if (userId.equals(t.getFuncionarioActualId())) return true;
-        if (!t.estaEnParalelo() || t.getExpedienteId() == null) return false;
-        List<String> nodosActivos = t.getNodosParalellosActivos();
-        if (nodosActivos == null || nodosActivos.isEmpty()) return false;
-        return seccionRepository.findByExpedienteIdOrderByOrdenSeccionAsc(t.getExpedienteId()).stream()
-                .anyMatch(s -> nodosActivos.contains(s.getNodoId())
-                        && userId.equals(s.getFuncionarioId())
-                        && esEstadoTrabajable(EstadoSeccion.from(s.getEstado())));
+        // Flujo en PARALELO (fork): NO usar funcionarioActualId — es un concepto de
+        // flujo secuencial y queda OBSOLETO al completar una rama (no se limpia). El
+        // trámite está en la bandeja del funcionario solo si tiene una sección de las
+        // ramas AÚN activas, asignada a él y en estado trabajable. Así, al completar
+        // su rama, el trámite sale de SU bandeja pero permanece en la del responsable
+        // de la(s) otra(s) rama(s) hasta el JOIN.
+        if (t.estaEnParalelo()) {
+            if (t.getExpedienteId() == null) return false;
+            List<String> nodosActivos = t.getNodosParalellosActivos();
+            if (nodosActivos == null || nodosActivos.isEmpty()) return false;
+            return seccionRepository.findByExpedienteIdOrderByOrdenSeccionAsc(t.getExpedienteId()).stream()
+                    .anyMatch(s -> nodosActivos.contains(s.getNodoId())
+                            && userId.equals(s.getFuncionarioId())
+                            && esEstadoTrabajable(EstadoSeccion.from(s.getEstado())));
+        }
+        // Flujo SECUENCIAL: es el funcionario actual del nodo activo.
+        return userId.equals(t.getFuncionarioActualId());
     }
 
     private boolean esEstadoTrabajable(EstadoSeccion e) {
