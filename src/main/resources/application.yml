@@ -7,6 +7,13 @@ spring:
       uri: mongodb://admin:12345678@localhost:27017/tramites_db?authSource=admin
       auto-index-creation: true
 
+  # Límite de subida (multipart). Por defecto Spring usa 1MB → cualquier archivo
+  # mayor fallaba con 500. Lo alineamos con app.documental.upload-max-mb (100MB).
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
 server:
   port: 8080
 
