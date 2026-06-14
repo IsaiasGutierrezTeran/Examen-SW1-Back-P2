@@ -101,14 +101,24 @@ public class ExpedienteService {
         }
 
         if (request.getCampos() != null) {
+            Map<String, String> valoresPorNombre = new HashMap<>();
             for (CampoValorDto cv : request.getCampos()) {
                 campoRepository.findById(cv.getCampoId()).ifPresent(campo -> {
                     if (campo.getSeccionId().equals(seccionId)) {
                         campo.setValor(cv.getValor());
                         campo.setFechaGuardado(LocalDateTime.now());
                         campoRepository.save(campo);
+                        if (campo.getNombre() != null) {
+                            valoresPorNombre.put(campo.getNombre(), cv.getValor());
+                        }
                     }
                 });
+            }
+            // Formulario COMPARTIDO en fork: replica los valores por NOMBRE de campo
+            // a las secciones hermanas del mismo expediente (otras ramas del paralelo),
+            // para que ambas ramas (p.ej. TEC y LEG) vean/editen el mismo formulario.
+            if (tramite.estaEnParalelo() && !valoresPorNombre.isEmpty()) {
+                propagarValoresAHermanas(seccion.getExpedienteId(), seccionId, valoresPorNombre);
             }
         }
 
@@ -118,6 +128,23 @@ public class ExpedienteService {
             seccion.setEstado(EstadoSeccion.EN_EJECUCION.getValor());
         }
         return seccionRepository.save(seccion);
+    }
+
+    /** Formulario compartido (fork): replica los valores (por NOMBRE de campo) a las
+     *  demás secciones del expediente, para que las ramas del paralelo vean lo mismo. */
+    private void propagarValoresAHermanas(String expedienteId, String seccionOrigenId,
+                                          Map<String, String> valores) {
+        for (SeccionExpediente otra :
+                seccionRepository.findByExpedienteIdOrderByOrdenSeccionAsc(expedienteId)) {
+            if (otra.getId().equals(seccionOrigenId)) continue;
+            for (CampoSeccion c : campoRepository.findBySeccionId(otra.getId())) {
+                if (c.getNombre() != null && valores.containsKey(c.getNombre())) {
+                    c.setValor(valores.get(c.getNombre()));
+                    c.setFechaGuardado(LocalDateTime.now());
+                    campoRepository.save(c);
+                }
+            }
+        }
     }
 
     private List<Map<String, Object>> enriquecerConPlantilla(List<CampoSeccion> campos) {
